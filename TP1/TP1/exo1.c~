@@ -1,0 +1,54 @@
+#include <stdlib.h>
+#include <stdio.h>
+
+void anf (int *f, int n) {
+	unsigned int nn; //taille du tableau 2^n
+	unsigned int jj; //taille de la surfonction
+	int i;
+	nn = 1 << n; //2^n
+	jj = nn >> 1; //premiere surfonction de taille 2^(n-1)
+
+	do {
+
+		i = 0;
+		do {
+			f[i+jj] ^= f[i];
+			i++;
+			if ((i & (jj-1)) == 0) {
+				i+=jj;
+			}
+		} while (i<nn);
+
+		jj = jj >> 1;
+	} while (jj != 0);
+
+
+}
+
+int main () {
+	int f[8] = {0,1,1,0,0,0,1,1};
+	int n = 3;
+	anf(f, n);
+
+	for (int i = 0; i<(1<<n); i++) {
+		printf("%d\n", f[i]);
+	}
+	printf("\n");
+	int g[8] = {0, 1, 1, 0, 0, 1, 0, 1};
+	anf(g, n);
+
+	for (int i = 0; i<(1<<n); i++) {
+		printf("%d\n", g[i]);
+	}
+
+	printf("\n");
+	int h[16] = {0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0};
+	n = 4;
+	anf(h, 4);
+
+	for (int i = 0; i<(1<<n); i++) {
+		printf("%d\n", h[i]);
+	}
+	
+	return 0;
+}
